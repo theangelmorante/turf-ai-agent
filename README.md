@@ -4,24 +4,8 @@
 
 ## 🏗️ Arquitectura y Decisiones Técnicas
 
-graph TD
-    User[Usuario Frontend Next.js] -->|POST /chat| APIGW[AWS API Gateway]
-    APIGW --> Lambda["AWS Lambda (Node.js/TS)"]
-    
-    subgraph "Cerebro del Agente (Lambda)"
-        Lambda -->|1. Generar Embedding| GoogleAPI["Google Gemini API"]
-        Lambda -->|2. Busqueda Semantica RPC| Supabase["Supabase (pgvector)"]
-        Supabase -->|Retorna Contexto| Lambda
-        Lambda -->|3. Generar Respuesta RAG| GroqAPI["Groq Cloud (Llama 3)"]
-    end
-    
-    GroqAPI -->|Respuesta Final| Lambda
-    Lambda -->|JSON| APIGW
-    APIGW --> User
+<img width="1220" height="596" alt="image" src="https://github.com/user-attachments/assets/232ab631-7d3b-4189-bc10-8a08cb81e087" />
 
-    style Lambda fill:#ff9900,stroke:#333,stroke-width:2px,color:white
-    style Supabase fill:#3ecf8e,stroke:#333,stroke-width:2px,color:white
-    style GroqAPI fill:#f55036,stroke:#333,stroke-width:2px,color:white
 
 Este proyecto demuestra la implementación de un sistema de **Retrieval-Augmented Generation (RAG)** moderno, alejándose de los monolitos tradicionales hacia una arquitectura de microservicios basada en eventos.
 

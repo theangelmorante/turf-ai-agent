@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  turf-ai-agent
+
+  SAM Template para Turf AI Agent (chat + Groq + Supabase)
+
+Parameters:
+  GroqApiKey:
+    Type: String
+    NoEcho: true
+    Description: API Key de Groq (se inyecta como variable de entorno GROQ_API_KEY)
+  GoogleApiKey:
+    Type: String
+    NoEcho: true
+    Description: API Key de Google (se inyecta como variable de entorno GOOGLE_API_KEY)
+  SupabaseUrl:
+    Type: String
+    NoEcho: true
+    Description: URL de Supabase (se inyecta como variable de entorno SUPABASE_URL)
+  SupabaseKey:
+    Type: String
+    NoEcho: true
+    Description: Clave de Supabase (se inyecta como variable de entorno SUPABASE_KEY)
+    
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+    LoggingConfig:
+      LogFormat: JSON
+      ApplicationLogLevel: INFO
+
+Resources:
+  ChatAgentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers/chat/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Environment:
+        Variables:
+          GROQ_API_KEY: !Ref GroqApiKey
+          GOOGLE_API_KEY: !Ref GoogleApiKey
+          SUPABASE_URL: !Ref SupabaseUrl
+          SUPABASE_KEY: !Ref SupabaseKey
+      Events:
+        ChatAgent:
+          Type: Api
+          Properties:
+            Path: /chat
+            Method: post
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - index.ts
+
+Outputs:
+  ChatAgentApi:
+    Description: "API Gateway endpoint URL para el Chat Agent"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/chat"
+  ChatAgentFunction:
+    Description: "Chat Agent Lambda Function ARN"
+    Value: !GetAtt ChatAgentFunction.Arn
+  ChatAgentFunctionIamRole:
+    Description: "IAM Role del Chat Agent"
+    Value: !GetAtt ChatAgentFunctionRole.Arn

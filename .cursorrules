@@ -1,0 +1,18 @@
+# Reglas de Proyecto: Turf AI Agent (AWS SAM + TS)
+
+## Stack Tecnológico
+- **Framework:** AWS SAM (CloudFormation)
+- **Runtime:** Node.js 20.x con TypeScript puro (esbuild)
+- **IA:** Groq SDK (Llama 3)
+- **DB:** Supabase (PostgreSQL + pgvector)
+
+## Reglas de Arquitectura
+- **Serverless First:** Cada Lambda debe ser independiente y estar definida en `template.yaml`.
+- **Estructura de Carpetas:** `src/handlers/{nombre-funcion}/index.ts`.
+- **Minimalismo:** No instales dependencias innecesarias. Prefiere `axios` o `fetch` nativo sobre SDKs pesados.
+- **Costos:** Siempre prioriza configuraciones que entren en el AWS Free Tier (128MB RAM para Lambdas, logs con retención de 1 día).
+
+## Instrucciones para Cursor
+- Al crear funciones, genera siempre el bloque correspondiente para el `template.yaml`.
+- Usa el perfil de AWS `--profile turf-ai` para cualquier comando sugerido.
+- Las respuestas deben ser técnicas y directas, enfocadas en un perfil Senior.

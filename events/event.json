@@ -1,0 +1,10 @@
+{
+  "body": "{\"message\": \"Me duele la rodilla, ¿qué me recomiendas?\"}",
+  "resource": "/chat",
+  "path": "/chat",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "isBase64Encoded": false
+}
